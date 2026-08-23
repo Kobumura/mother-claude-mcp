@@ -32,7 +32,9 @@ ProtectControlGroups=true
 RestrictAddressFamilies=AF_INET AF_INET6
 RestrictNamespaces=true
 LockPersonality=true
-MemoryDenyWriteExecute=true
+# NOTE: MemoryDenyWriteExecute is deliberately NOT set. V8 needs writable-then-executable
+# pages for its JIT, so enabling it makes Node core-dump at startup with SIGTRAP inside
+# SetPermissionsOnExecutableMemoryChunk. Everything else here is safe for a JIT runtime.
 
 StandardOutput=journal
 StandardError=journal
