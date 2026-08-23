@@ -1,0 +1,38 @@
+{
+  "name": "mother-claude-mcp",
+  "version": "0.1.0",
+  "description": "MCP server that serves your team's engineering docs to AI coding sessions. Point it at any docs source.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "mother-claude-mcp": "src/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node --test test/"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE",
+    "mother-claude.config.example.json"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "documentation",
+    "ai",
+    "claude"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
+  }
+}

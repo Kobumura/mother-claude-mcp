@@ -1,0 +1,41 @@
+# systemd unit for the always-on private brain.
+#   sudo cp deploy/mother-claude-mcp.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now mother-claude-mcp
+[Unit]
+Description=Mother Claude MCP — serves the engineering brain over Streamable HTTP
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mcp
+Group=mcp
+WorkingDirectory=/opt/mother-claude-mcp
+
+# The docs corpus and the token both live outside the unit. EnvironmentFile must be
+# root-owned 0600 — it holds the bearer token that guards public:no documents.
+EnvironmentFile=/etc/mother-claude-mcp.env
+ExecStart=/usr/bin/node /opt/mother-claude-mcp/src/cli.js --http --host 127.0.0.1 --port 8848
+
+Restart=on-failure
+RestartSec=5s
+
+# The server only ever reads markdown. Nothing here needs write access to the disk.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadOnlyPaths=/opt/mother-claude-mcp /srv/mother-claude-docs
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

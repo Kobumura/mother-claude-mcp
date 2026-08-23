@@ -1,0 +1,7 @@
+{
+  "org": "Fixture",
+  "projects": [
+    { "name": "alpha", "jira": "ALP", "status": "active" },
+    { "name": "beta", "jira": "BET", "status": "legacy" }
+  ]
+}

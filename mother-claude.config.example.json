@@ -1,0 +1,28 @@
+{
+  "name": "acme-engineering",
+
+  "rules": [
+    {
+      "pack": "acme-starter@1.0",
+      "include": ["standards", "playbooks/migrations"],
+      "exclude": ["standards/writing-voice"]
+    },
+    { "path": "./docs" }
+  ],
+
+  "incidents": [
+    { "path": "./retros", "optional": true },
+    { "path": "./decisions", "optional": true }
+  ],
+
+  "roster": "./roster.json",
+
+  "profiles": {
+    "worker": {
+      "budget": "lean",
+      "description": "The standing gates every session must respect."
+    },
+    "backend": { "applies": "api", "description": "Express/Node backend work." },
+    "frontend": { "applies": "web", "description": "Web application work." }
+  }
+}
