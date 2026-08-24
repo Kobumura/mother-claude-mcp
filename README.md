@@ -8,6 +8,10 @@ in front of it instead of loading a 500KB documentation tree into its context wi
 
 It ships **no rules of its own**. Every rule it serves is one you wrote.
 
+> **Setting this up?** [`SETUP-PROMPT.md`](SETUP-PROMPT.md) is a copy-paste block you can
+> hand to your AI assistant. It has enough context to do the whole setup without you
+> reading the rest of this file.
+
 ```
 Your docs  ──►  mother-claude-mcp  ──►  any MCP client
 (markdown)      (index + serve)         (Claude Code, etc.)
@@ -31,6 +35,30 @@ npm install -g mother-claude-mcp
 ```
 
 Requires Node 20+.
+
+## Works with
+
+MCP is an open protocol, so this is not Claude-specific. Any MCP client can use it —
+Claude Code, Claude Desktop, Cursor, VS Code (Copilot agent mode), Windsurf, Zed, Cline,
+JetBrains AI Assistant, Goose, the OpenAI Agents SDK, and others. The server uses only
+standard MCP primitives and both spec transports; there are no vendor extensions.
+
+Most clients share the same config shape, though the file location differs:
+
+```json
+{
+  "mcpServers": {
+    "mother-claude": {
+      "command": "npx",
+      "args": ["-y", "mother-claude-mcp", "--config", "./mother-claude.config.json"]
+    }
+  }
+}
+```
+
+**One caveat worth knowing:** all seven tools work in every client, but the `boot` prompt
+only appears in clients that implement MCP *prompts*, which is a minority today. If yours
+does not, call `get_rules` with your `lean` profile instead — same content, one tool call.
 
 ## Quick start
 
@@ -79,6 +107,34 @@ context-budget: lean       # lean = always-on gates; reference = full detail
 A document's **ID** is its path without the extension — `standards/code-standards.md`
 becomes `standards/code-standards`. Its **kind** is the top folder. That's the whole
 schema; there is nothing else to author.
+
+## Adopting this
+
+**You do not need to build a docs repo.** There are two on-ramps.
+
+**Point it at docs you already have.** Front-matter is entirely optional: a plain
+markdown folder works immediately. Titles fall back to the first `# H1` and then the
+filename, the category comes from the top folder, and a `YYYY-MM-DD-` filename prefix is
+read as a date. Most teams already have a `docs/`, `adr/` or `handbook/` directory that
+works as-is.
+
+Add front-matter later, only where it earns something:
+
+| You have | You get |
+|---|---|
+| Plain markdown | `search_docs`, `get_doc`, `list_docs`, section slicing |
+| `+ applies:` | per-stack slices — `get_rules({ applies: "api" })` |
+| `+ context-budget:` | a lean boot profile for session start |
+| `+ public:` | can run a shared, public-only instance |
+
+**Or start from someone else's pack** and cascade your own docs on top — see below.
+
+> **An honest expectation.** This tool is only as good as what you feed it.
+> `lookup_incident` is worth nothing on day one and compounds as you accumulate retros;
+> `get_rules` is only as sharp as the rules you have written down. If your docs are thin,
+> the answer is better docs, not better tooling. What this changes is the *economics* of
+> having good docs — they stop being a tree every session must carry and become something
+> a session can query.
 
 ## Sharing rules between teams — the cascade
 
