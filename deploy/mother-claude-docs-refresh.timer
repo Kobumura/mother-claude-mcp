@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh the Mother Claude docs corpus every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

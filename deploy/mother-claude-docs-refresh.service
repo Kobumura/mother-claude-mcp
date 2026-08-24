@@ -1,0 +1,17 @@
+# Pulls the docs corpus so the served brain tracks the repo.
+# The engine re-reads from disk on a 5s TTL, so a successful pull is live almost
+# immediately — no restart, and no need to bounce the server.
+[Unit]
+Description=Refresh the Mother Claude docs corpus
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/srv/mother-claude-docs
+Environment=GIT_SSH_COMMAND=ssh -i /home/ubuntu/.ssh/mother_claude_docs -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes
+ExecStart=/usr/bin/git fetch --quiet origin
+# Hard reset rather than merge: this checkout is a read-only replica, never edited
+# in place, so a fast-forward that could ever conflict is a bug, not a merge to solve.
+ExecStart=/bin/sh -c '/usr/bin/git reset --hard --quiet origin/$(git rev-parse --abbrev-ref HEAD)'

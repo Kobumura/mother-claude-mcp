@@ -1,0 +1,12 @@
+{
+  "name": "fixture",
+  "rules": [
+    { "pack": "base-pack@1.0", "exclude": ["standards/writing-voice"] },
+    { "path": "./local" }
+  ],
+  "incidents": [{ "path": "./incidents" }],
+  "roster": "./roster.json",
+  "profiles": {
+    "worker": { "budget": "lean", "description": "Boot slice for a worker session." }
+  }
+}
