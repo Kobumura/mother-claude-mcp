@@ -26,8 +26,10 @@ and a session working on the API never pays for the mobile playbook.
 
 ## Install
 
+Not on npm yet. Install from GitHub:
+
 ```bash
-npm install -g mother-claude-mcp
+npm install -g github:Kobumura/mother-claude-mcp
 ```
 
 Requires Node 20+.
@@ -56,7 +58,7 @@ Register it with your MCP client. For Claude Code, in `.mcp.json`:
   "mcpServers": {
     "mother-claude": {
       "command": "npx",
-      "args": ["-y", "mother-claude-mcp", "--config", "./mother-claude.config.json"]
+      "args": ["-y", "github:Kobumura/mother-claude-mcp", "--config", "./mother-claude.config.json"]
     }
   }
 }
